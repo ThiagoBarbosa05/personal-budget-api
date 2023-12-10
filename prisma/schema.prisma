@@ -35,13 +35,11 @@ model Envelope {
 }
 
 model Transaction {
-  id          String   @id @default(uuid())
-  description String
-  amount      Int
-  category    String
-  type        String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  id                String   @id @default(uuid())
+  payment_recipient String
+  payment_amount    Int
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now())
 
   envelope Envelope @relation(fields: [envelope_id], references: [id])
 

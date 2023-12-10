@@ -1,6 +1,6 @@
 import { TransferValueUseCase } from '../envelopes-use-case/transfer-value-use-case'
 
-export function makeTransfeValueUseCase() {
+export function makeTransferValueUseCase() {
   const transferValueUseCase = new TransferValueUseCase()
 
   return transferValueUseCase

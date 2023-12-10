@@ -6,11 +6,11 @@ import { makeGetUserUseCase } from '../use-cases/factories/make-get-user-use-cas
 
 export const usersController = {
   async createUser(req: Request, res: Response) {
-    const userBodyschema = z.object({
+    const userBodySchema = z.object({
       username: z.string(),
     })
 
-    const { username } = userBodyschema.parse(req.body)
+    const { username } = userBodySchema.parse(req.body)
 
     const createUser = MakeCreateUserUseCase()
 
@@ -31,14 +31,13 @@ export const usersController = {
   },
 
   async getUser(req: Request, res: Response) {
-    const { id } = req.params
+    const { userId } = req.cookies
 
-    const getUser = makeGetUserUseCase()
+    if (!userId) return res.status(400).send({ message: 'Unauthorized' })
 
-    const { user } = await getUser.execute(id)
+    const getUserById = makeGetUserUseCase()
+    const { user } = await getUserById.execute(userId)
 
-    if (!user) return res.status(404).send()
-
-    res.send({ user })
+    res.status(200).send({ user })
   },
 }

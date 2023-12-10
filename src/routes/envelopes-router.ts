@@ -3,11 +3,11 @@ import { envelopesController } from '../controllers/envelopes-controller'
 
 export const envelopesRouter: Router = Router()
 
-envelopesRouter.post('/', envelopesController.createEnvelope)
+envelopesRouter.post('/envelopes', envelopesController.createEnvelope)
 
-envelopesRouter.get('/', envelopesController.getEnvelopes)
+envelopesRouter.get('/envelopes', envelopesController.getEnvelopes)
 
-envelopesRouter.get('/:id', envelopesController.getEnvelopeById)
+envelopesRouter.get('/envelopes/:id', envelopesController.getEnvelopeById)
 
 envelopesRouter.put('/:envelopeId', envelopesController.updateEnvelopeById)
 

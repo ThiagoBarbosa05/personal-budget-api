@@ -17,13 +17,6 @@ export class CreateUserUseCase {
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const user = await this.usersRepository.create({ username })
 
-    // const user = await prisma.user.create({
-    //   data: {
-    //     username,
-    //   },
-    // })
-
-    // return { user }
     return { user }
   }
 }

@@ -21,14 +21,6 @@ export class CreateEnvelopeUseCase {
   }: CreateEnvelopeUseCaseRequest): Promise<CreateEnvelopeUseCaseResponse> {
     const amountInCents = amount * 100
 
-    // const envelope = await prisma.envelope.create({
-    //   data: {
-    //     description,
-    //     amount: amountInCents,
-    //     user_id,
-    //   },
-    // })
-
     const envelope = await this.envelopeRepository.create({
       description,
       amount: amountInCents,

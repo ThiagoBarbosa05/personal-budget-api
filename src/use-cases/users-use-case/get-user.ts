@@ -1,11 +1,6 @@
-import { prisma } from '../../lib/prisma'
 import { UsersRepository } from '../../repositories/contracts/users-repository'
 import { User } from '../../types'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
-
-interface GetUserByIdUseCaseRequest {
-  userId: string
-}
 
 interface GetUserByIdUseCaseResponse {
   user: User
@@ -14,22 +9,11 @@ interface GetUserByIdUseCaseResponse {
 export class GetUserUseCase {
   constructor(private usersRepository: UsersRepository) {}
 
-  async execute({
-    userId,
-  }: GetUserByIdUseCaseRequest): Promise<GetUserByIdUseCaseResponse> {
-    // const user = await prisma.user.findUnique({
-    //   where: {
-    //     id,
-    //   },
-    // })
-
-    // return { user }
+  async execute(userId: string): Promise<GetUserByIdUseCaseResponse> {
     const user = await this.usersRepository.getUserById(userId)
-
     if (!user) {
       throw new ResourceNotFoundError()
     }
-
     return {
       user,
     }

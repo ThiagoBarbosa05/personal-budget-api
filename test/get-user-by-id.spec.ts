@@ -17,15 +17,13 @@ describe('Get user by id', () => {
 
     const userId = createdUser.id
 
-    const { user } = await sut.execute({ userId })
+    const { user } = await sut.execute(userId)
 
     expect(user?.username).toEqual('John Doe')
   })
   it('should not be possible to retrieve a user using the incorrect id', async () => {
-    await expect(() =>
-      sut.execute({
-        userId: 'non-existing-id',
-      }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
+    await expect(() => sut.execute('non-existing-id')).rejects.toBeInstanceOf(
+      ResourceNotFoundError,
+    )
   })
 })

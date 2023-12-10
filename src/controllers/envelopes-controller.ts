@@ -5,7 +5,7 @@ import { makeGetEnvelopesUseCase } from '../use-cases/factories/make-get-envelop
 import { makeGetEnvelopeByIdUseCase } from '../use-cases/factories/make-get-envelope-by-id-use-case'
 import { makeUpdateEnvelopeUseCase } from '../use-cases/factories/make-update-envelope-use-case'
 import { makeDeleteEnvelopeUseCase } from '../use-cases/factories/make-delete-envelope-use-case'
-import { makeTransfeValueUseCase } from '../use-cases/factories/make-transfer-value-use-case'
+import { makeTransferValueUseCase } from '../use-cases/factories/make-transfer-value-use-case'
 
 export const envelopesController = {
   async createEnvelope(req: Request, res: Response) {
@@ -16,10 +16,11 @@ export const envelopesController = {
 
     const { description, amount } = envelopeBodySchema.parse(req.body)
 
-    // const amountInCents = amount * 100
     const user_id = req.cookies.userId
 
     const createEnvelope = makeCreateEnvelopeUseCase()
+
+    if (!createEnvelope) return res.status(400).send()
 
     await createEnvelope.execute({ description, amount, user_id })
 
@@ -45,6 +46,8 @@ export const envelopesController = {
     const getEnvelopeById = makeGetEnvelopeByIdUseCase()
 
     const { envelope } = await getEnvelopeById.execute({ id, userId })
+
+    if (!envelope) return res.status(400).send()
 
     res.status(200).send({ envelope })
   },

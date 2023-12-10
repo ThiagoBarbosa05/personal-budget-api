@@ -11,7 +11,7 @@ describe('Create user use case', () => {
     sut = new CreateUserUseCase(usersRepository)
   })
 
-  it('should be able  to create an user', async () => {
+  it('should be able to create an user', async () => {
     const { user } = await sut.execute({ username: 'Thiago' })
 
     expect(user.id).toEqual(expect.any(String))

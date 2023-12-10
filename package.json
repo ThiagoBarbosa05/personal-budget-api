@@ -7,7 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "lint": "eslint src --ext .ts --fix",
     "build": "tsup src --out-dir build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "vitest run --dir test-e2e"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,9 @@
     "@types/cors": "2.8.17",
     "@types/express": "4.17.21",
     "@types/node": "20.10.2",
+    "@types/supertest": "2.0.16",
     "eslint": "8.55.0",
+    "supertest": "6.3.3",
     "tsup": "8.0.1",
     "tsx": "4.6.2",
     "typescript": "5.3.2",

@@ -51,15 +51,12 @@ export class CreateTransactionUseCase {
 
     const amountToUpdate = envelopeAmountToUpdate.amount - paymentAmountInCents
 
-    const envelopeAmountUpdatedByTransaction =
-      await this.envelopesRepository.updateEnvelopeById({
-        id: envelope_id,
-        updatedAt: new Date(),
-        amount: amountToUpdate,
-        userId: user_id,
-      })
-
-    console.log(envelopeAmountUpdatedByTransaction)
+    await this.envelopesRepository.updateEnvelopeById({
+      id: envelope_id,
+      updatedAt: new Date(),
+      amount: amountToUpdate,
+      userId: user_id,
+    })
 
     return { transaction }
   }
