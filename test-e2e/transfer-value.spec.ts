@@ -12,8 +12,6 @@ describe('Transfer Values (E2E)', () => {
 
     const splitCookie = cookie.split(';')[0].split('=')[1]
 
-    console.log(splitCookie)
-
     await request(app)
       .post('/envelopes')
       .send({ description: 'envelope-1', amount: 1220.4 })

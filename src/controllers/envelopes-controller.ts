@@ -7,8 +7,6 @@ import { makeUpdateEnvelopeUseCase } from '../use-cases/factories/make-update-en
 import { makeDeleteEnvelopeUseCase } from '../use-cases/factories/make-delete-envelope-use-case'
 import { makeTransferValueUseCase } from '../use-cases/factories/make-transfer-value-use-case'
 import { prisma } from '../lib/prisma'
-import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found'
-import { InsufficientFundsToTransfer } from '../use-cases/errors/insufficient-funds-to-transfer'
 
 export const envelopesController = {
   async createEnvelope(req: Request, res: Response) {
