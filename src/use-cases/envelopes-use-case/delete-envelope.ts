@@ -12,13 +12,6 @@ export class DeleteEnvelopeByIdUseCase {
     id,
     userId,
   }: DeleteEnvelopeByIdUseCaseRequest): Promise<void> {
-    // await prisma.envelope.delete({
-    //   where: {
-    //     id,
-    //     user_id: userId,
-    //   },
-    // })
-
     await this.envelopeRepository.deleteEnvelopeById({
       id,
       userId,

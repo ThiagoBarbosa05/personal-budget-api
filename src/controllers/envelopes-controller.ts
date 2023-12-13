@@ -6,6 +6,9 @@ import { makeGetEnvelopeByIdUseCase } from '../use-cases/factories/make-get-enve
 import { makeUpdateEnvelopeUseCase } from '../use-cases/factories/make-update-envelope-use-case'
 import { makeDeleteEnvelopeUseCase } from '../use-cases/factories/make-delete-envelope-use-case'
 import { makeTransferValueUseCase } from '../use-cases/factories/make-transfer-value-use-case'
+import { prisma } from '../lib/prisma'
+import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found'
+import { InsufficientFundsToTransfer } from '../use-cases/errors/insufficient-funds-to-transfer'
 
 export const envelopesController = {
   async createEnvelope(req: Request, res: Response) {
@@ -69,7 +72,7 @@ export const envelopesController = {
       amount,
       description,
       userId,
-      envelopeId,
+      id: envelopeId,
     })
 
     res.status(200).send()
@@ -94,15 +97,32 @@ export const envelopesController = {
     const { amountFrom, amountTo } = req.params
     const { userId } = req.cookies
 
-    const transferValue = makeTransfeValueUseCase()
+    const envelopesResponse = await prisma.envelope.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        Transaction: true,
+      },
+    })
 
-    await transferValue.execute({
+    const envelopes = envelopesResponse.map((env) => ({
+      ...env,
+      totalAmountTransactions: env.Transaction.reduce(
+        (sum, transaction) => sum + transaction.payment_amount,
+        0,
+      ),
+    }))
+
+    const transferValueUseCase = makeTransferValueUseCase()
+
+    await transferValueUseCase.execute({
+      destinationId: amountTo,
       amountToUpdate,
-      amountFrom,
-      amountTo,
+      originId: amountFrom,
       userId,
     })
 
-    res.status(200).send({ mesg: 'Transfer completed successfully' })
+    res.status(200).send(envelopes)
   },
 }

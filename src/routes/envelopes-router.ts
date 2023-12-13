@@ -1,19 +1,37 @@
 import { Router } from 'express'
 import { envelopesController } from '../controllers/envelopes-controller'
+import { userIdCookieExists } from '../middlewares/user-id-cookie-exists'
 
 export const envelopesRouter: Router = Router()
 
-envelopesRouter.post('/envelopes', envelopesController.createEnvelope)
+envelopesRouter.post(
+  '/envelopes',
+  userIdCookieExists,
+  envelopesController.createEnvelope,
+)
 
-envelopesRouter.get('/envelopes', envelopesController.getEnvelopes)
+envelopesRouter.get(
+  '/envelopes',
+  userIdCookieExists,
+  envelopesController.getEnvelopes,
+)
 
 envelopesRouter.get('/envelopes/:id', envelopesController.getEnvelopeById)
 
-envelopesRouter.put('/:envelopeId', envelopesController.updateEnvelopeById)
+envelopesRouter.put(
+  '/envelopes/:envelopeId',
+  userIdCookieExists,
+  envelopesController.updateEnvelopeById,
+)
 
-envelopesRouter.delete('/:id', envelopesController.deleteEnvelopeById)
+envelopesRouter.delete(
+  '/envelopes/:id',
+  userIdCookieExists,
+  envelopesController.deleteEnvelopeById,
+)
 
 envelopesRouter.post(
-  '/transfer/:amountFrom/:amountTo',
+  '/envelopes/transfer/:amountFrom/:amountTo',
+  userIdCookieExists,
   envelopesController.transferValue,
 )

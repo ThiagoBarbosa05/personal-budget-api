@@ -24,17 +24,6 @@ export class UpdateEnvelopeUseCase {
   }: EnvelopeUseCaseRequest): Promise<EnvelopeUseCaseResponse> {
     const amountInCents = amount && amount * 100
 
-    // const envelope = await prisma.envelope.update({
-    //   data: {
-    //     description: data.description,
-    //     amount: amountInCents,
-    //     updated_at: new Date(),
-    //   },
-    //   where: {
-    //     id: data.envelopeId,
-    //     user_id: data.userId,
-    //   },
-    // })
     const envelope = await this.envelopesRepository.updateEnvelopeById({
       id,
       userId,

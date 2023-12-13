@@ -2,7 +2,7 @@ import { EnvelopesRepository } from '../../repositories/contracts/envelopes-repo
 import { InsufficientFundsToTransfer } from '../errors/insufficient-funds-to-transfer'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 
-export interface TransferValueUseCaseData {
+export interface TransferValueUseCaseRequest {
   amountToUpdate: number
   destinationId: string
   originId: string
@@ -17,54 +17,37 @@ export class TransferValueUseCase {
     originId,
     destinationId,
     userId,
-  }: TransferValueUseCaseData) {
-    const amountToUpdateInCents = amountToUpdate * 100
-
-    // const envelopes = await prisma.envelope.findMany({
-    //   where: {
-    //     id: { in: [amountFrom, amountTo] },
-    //     user_id: userId,
-    //   },
-    // })
-
+  }: TransferValueUseCaseRequest) {
     const envelopes = await this.envelopeRepository.getAllEnvelopes(userId)
 
     if (!envelopes) {
       throw new ResourceNotFoundError()
     }
 
-    const originEnvelope = envelopes.find(
-      (envelope) => envelope.id === originId,
-    )
+    const originEnvelope = envelopes.find((env) => env.id === originId)
     const destinationEnvelope = envelopes.find(
-      (envelope) => envelope.id === destinationId,
+      (env) => env.id === destinationId,
     )
+
+    const amountToTransferInCents = amountToUpdate * 100
 
     if (!originEnvelope || !destinationEnvelope) {
       throw new ResourceNotFoundError()
     }
 
-    if (originEnvelope.amount < amountToUpdateInCents) {
+    if (
+      originEnvelope.amount < amountToTransferInCents ||
+      amountToTransferInCents >
+        originEnvelope.amount - originEnvelope.totalAmountTransactions
+    ) {
       throw new InsufficientFundsToTransfer()
     }
 
     await this.envelopeRepository.transferValue({
       userId,
-      amountToUpdate: amountToUpdateInCents,
+      amountToUpdate: amountToTransferInCents,
       originId,
       destinationId,
     })
-
-    // await prisma.$transaction([
-    //   prisma.envelope.update({
-    //     where: { id: amountFrom, user_id: userId },
-    //     data: { amount: { decrement: amountToUpdateInCents } },
-    //   }),
-
-    //   prisma.envelope.update({
-    //     where: { id: amountTo, user_id: userId },
-    //     data: { amount: { increment: amountToUpdateInCents } },
-    //   }),
-    // ])
   }
 }

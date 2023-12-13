@@ -26,7 +26,7 @@ model Envelope {
   amount      Int
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   user_id     String
   Transaction Transaction[]
@@ -41,7 +41,7 @@ model Transaction {
   created_at        DateTime @default(now())
   updated_at        DateTime @default(now())
 
-  envelope Envelope @relation(fields: [envelope_id], references: [id])
+  envelope Envelope @relation(fields: [envelope_id], references: [id], onDelete: Cascade)
 
   envelope_id String
 

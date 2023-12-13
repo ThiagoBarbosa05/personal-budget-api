@@ -25,9 +25,13 @@ export interface TransferValueParams {
   userId: string
 }
 
+export interface EnvelopesResponse extends Envelope {
+  totalAmountTransactions: number
+}
+
 export interface EnvelopesRepository {
   create(data: Envelope): Promise<Envelope>
-  getAllEnvelopes(userId: string): Promise<Envelope[] | null>
+  getAllEnvelopes(userId: string): Promise<EnvelopesResponse[] | null>
   getEnvelopeById({
     id,
     userId,
