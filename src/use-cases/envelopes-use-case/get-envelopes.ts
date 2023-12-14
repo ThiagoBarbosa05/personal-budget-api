@@ -10,12 +10,6 @@ export class GetEnvelopesUseCase {
   constructor(private envelopesRepository: EnvelopesRepository) {}
 
   async execute(userId: string): Promise<GetEnvelopesUseCaseCaseResponse> {
-    // const envelopes = await prisma.envelope.findMany({
-    //   where: {
-    //     user_id: userId,
-    //   },
-    // })
-
     const envelopes = await this.envelopesRepository.getAllEnvelopes(userId)
 
     if (!envelopes) {

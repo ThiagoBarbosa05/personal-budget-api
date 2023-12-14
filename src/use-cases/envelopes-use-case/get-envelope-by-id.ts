@@ -18,13 +18,6 @@ export class GetEnvelopeByIdUseCase {
     id,
     userId,
   }: GetEnvelopeByIdUseCaseRequest): Promise<GetEnvelopeByIdUseCaseResponse> {
-    // const envelope = await prisma.envelope.findFirst({
-    //   where: {
-    //     id,
-    //     user_id: userId,
-    //   },
-    // })
-
     const envelope = await this.envelopesRepository.getEnvelopeById({
       id,
       userId,

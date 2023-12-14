@@ -1,4 +1,3 @@
-import { prisma } from '../../lib/prisma'
 import { EnvelopesRepository } from '../../repositories/contracts/envelopes-repository'
 import { TransactionsRepository } from '../../repositories/contracts/transactions-repository'
 import { Transaction } from '../../types'
