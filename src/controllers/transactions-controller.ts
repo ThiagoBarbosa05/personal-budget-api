@@ -1,6 +1,11 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
 import { MakeCreateTransactionUseCase } from '../use-cases/factories/make-create-transaction-use-case'
+import { makeUpdateTransactionUseCase } from '../use-cases/factories/make-update-transaction-use-case'
+import { makeGetTransactionsUseCase } from '../use-cases/factories/make-get-transactions-use-case'
+import { InsufficientFundsToTransfer } from '../use-cases/errors/insufficient-funds-to-transfer'
+import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found'
+import { makeDeleteTransactionUseCase } from '../use-cases/factories/make-delete-transaction-use-case'
 
 export const transactionsController = {
   async create(req: Request, res: Response) {
@@ -25,5 +30,60 @@ export const transactionsController = {
     })
 
     res.status(201).send()
+  },
+
+  async getTransactions(req: Request, res: Response) {
+    const { envelopeId } = req.params
+
+    const getTransactionUseCase = makeGetTransactionsUseCase()
+
+    const { transactions } = await getTransactionUseCase.execute(envelopeId)
+
+    res.status(200).send({ transactions })
+  },
+
+  async update(req: Request, res: Response) {
+    try {
+      const updateTransactionBodySchema = z.object({
+        payment_recipient: z.string().optional(),
+        payment_amount: z.number().optional(),
+      })
+
+      const { payment_amount, payment_recipient } =
+        updateTransactionBodySchema.parse(req.body)
+
+      const { envelopeId, transactionId } = req.params
+
+      const { userId } = req.cookies
+
+      const updateTransactionUseCase = makeUpdateTransactionUseCase()
+
+      res.status(200).send()
+
+      await updateTransactionUseCase.execute({
+        envelope_id: envelopeId,
+        transaction_id: transactionId,
+        user_id: userId,
+        payment_amount,
+        payment_recipient,
+      })
+    } catch (err) {
+      if (
+        err instanceof InsufficientFundsToTransfer ||
+        err instanceof ResourceNotFoundError
+      ) {
+        res.send(err.message)
+      }
+    }
+  },
+
+  async delete(req: Request, res: Response) {
+    const { transactionId } = req.params
+
+    const deleteTransactionUseCase = makeDeleteTransactionUseCase()
+
+    await deleteTransactionUseCase.execute(transactionId)
+
+    res.status(200).send()
   },
 }

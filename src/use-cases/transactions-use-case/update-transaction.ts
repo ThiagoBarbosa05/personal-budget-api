@@ -1,3 +1,4 @@
+import { prisma } from '../../lib/prisma'
 import { EnvelopesRepository } from '../../repositories/contracts/envelopes-repository'
 import { TransactionsRepository } from '../../repositories/contracts/transactions-repository'
 import { Transaction } from '../../types'
@@ -31,48 +32,47 @@ export class UpdateTransactionUseCase {
   }: UpdateTransactionUseCaseRequest): Promise<UpdateTransactionUseCaseResponse> {
     const paymentAmountInCents = payment_amount && payment_amount * 100
 
-    const envelopeAmountToUpdate =
-      await this.envelopesRepository.getEnvelopeById({
-        id: envelope_id,
-        userId: user_id,
-      })
+    const envelopeToUpdate = await this.envelopesRepository.getEnvelopeById({
+      id: envelope_id,
+      userId: user_id,
+    })
 
-    if (!envelopeAmountToUpdate) {
+    const transactionBeforeUpdate =
+      await this.transactionsRepository.getTransactions(
+        envelope_id,
+        transaction_id,
+      )
+
+    if (!paymentAmountInCents) {
+      throw new Error('Please provide a payment amount to update.')
+    }
+
+    if (!envelopeToUpdate || !transactionBeforeUpdate) {
       throw new ResourceNotFoundError()
     }
 
-    if (
-      paymentAmountInCents &&
-      paymentAmountInCents > envelopeAmountToUpdate.amount
-    ) {
+    if (paymentAmountInCents > envelopeToUpdate.amount) {
       throw new InsufficientFundsToTransfer()
     }
 
     const transactionUpdated =
       await this.transactionsRepository.updateTransaction({
+        payment_recipient,
         transaction_id,
         payment_amount: paymentAmountInCents,
-        payment_recipient,
         updated_at: new Date(),
       })
 
-    const amountToUpdate = paymentAmountInCents
-      ? envelopeAmountToUpdate.amount - paymentAmountInCents
-      : envelopeAmountToUpdate.amount
-
-    const envelopeAmountUpdatedByTransaction =
-      await this.envelopesRepository.updateEnvelopeById({
-        id: envelope_id,
-        updatedAt: new Date(),
-        amount: amountToUpdate,
-        userId: user_id,
-      })
-
-    console.log({
-      envelopeAmountToUpdate,
-      transactionUpdated,
-      envelopeAmountUpdatedByTransaction,
+    await this.envelopesRepository.updateEnvelopeById({
+      id: envelope_id,
+      userId: user_id,
+      updatedAt: new Date(),
+      amount:
+        envelopeToUpdate?.amount +
+        transactionBeforeUpdate[0].payment_amount -
+        paymentAmountInCents,
     })
+
     return { transactionUpdated }
   }
 }

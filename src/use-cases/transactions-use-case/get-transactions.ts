@@ -2,10 +2,6 @@ import { TransactionsRepository } from '../../repositories/contracts/transaction
 import { Transaction } from '../../types'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 
-interface GetTransactionsUseCaseRequest {
-  envelope_id: string
-}
-
 interface GetTransactionsUseCaseResponse {
   transactions: Transaction[]
 }
@@ -13,7 +9,7 @@ interface GetTransactionsUseCaseResponse {
 export class GetTransactionsUseCase {
   constructor(private transactionsRepository: TransactionsRepository) {}
 
-  async execute(envelope_id: string) {
+  async execute(envelope_id: string): Promise<GetTransactionsUseCaseResponse> {
     const transactions =
       await this.transactionsRepository.getTransactions(envelope_id)
 

@@ -10,3 +10,19 @@ transactionsRouter.post(
   userIdCookieExists,
   transactionsController.create,
 )
+
+transactionsRouter.get(
+  '/transactions/:envelopeId',
+  userIdCookieExists,
+  transactionsController.getTransactions,
+)
+
+transactionsRouter.put(
+  '/transactions/:envelopeId/:transactionId',
+  transactionsController.update,
+)
+
+transactionsRouter.delete(
+  '/transactions/:transactionId',
+  transactionsController.delete,
+)
