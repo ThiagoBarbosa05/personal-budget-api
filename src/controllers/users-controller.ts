@@ -4,6 +4,7 @@ import { ZodError, z } from 'zod'
 import { MakeCreateUserUseCase } from '../use-cases/factories/make-create-user-use-case'
 import { makeGetUserUseCase } from '../use-cases/factories/make-get-user-use-case'
 import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found'
+import { env } from '../env'
 
 export const usersController = {
   async createUser(req: Request, res: Response) {
@@ -21,7 +22,7 @@ export const usersController = {
           maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
           path: '/',
           httpOnly: true,
-          secure: false,
+          secure: env.NODE_ENV === 'production',
         })
       }
       res.status(201).send()
