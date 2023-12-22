@@ -20,7 +20,7 @@ export const usersController = {
         res.cookie('userId', userId, {
           maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
           path: '/',
-          httpOnly: true,
+          // httpOnly: true,
           secure: true,
           sameSite: 'none',
         })
