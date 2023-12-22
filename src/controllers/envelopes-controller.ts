@@ -6,7 +6,6 @@ import { makeGetEnvelopeByIdUseCase } from '../use-cases/factories/make-get-enve
 import { makeUpdateEnvelopeUseCase } from '../use-cases/factories/make-update-envelope-use-case'
 import { makeDeleteEnvelopeUseCase } from '../use-cases/factories/make-delete-envelope-use-case'
 import { makeTransferValueUseCase } from '../use-cases/factories/make-transfer-value-use-case'
-import { prisma } from '../lib/prisma'
 import { ResourceNotFoundError } from '../use-cases/errors/resource-not-found'
 import { InsufficientFundsToTransfer } from '../use-cases/errors/insufficient-funds-to-transfer'
 
@@ -14,8 +13,12 @@ export const envelopesController = {
   async createEnvelope(req: Request, res: Response) {
     try {
       const envelopeBodySchema = z.object({
-        description: z.string(),
-        amount: z.number(),
+        description: z.string().refine((data) => data.trim() !== '', {
+          message: 'description is required',
+        }),
+        amount: z
+          .number()
+          .min(1, { message: 'amount has to be greater than one' }),
       })
 
       const { description, amount } = envelopeBodySchema.parse(req.body)
@@ -111,29 +114,16 @@ export const envelopesController = {
 
   async transferValue(req: Request, res: Response) {
     try {
-      const amountToTransferSchema = z.object({ amountToUpdate: z.number() })
+      const amountToTransferSchema = z.object({
+        amountToUpdate: z.number().min(1, {
+          message: 'the value of the transfer must be greater than one',
+        }),
+      })
 
       const { amountToUpdate } = amountToTransferSchema.parse(req.body)
 
       const { amountFrom, amountTo } = req.params
       const { userId } = req.cookies
-
-      const envelopesResponse = await prisma.envelope.findMany({
-        where: {
-          user_id: userId,
-        },
-        include: {
-          Transaction: true,
-        },
-      })
-
-      const envelopes = envelopesResponse.map((env) => ({
-        ...env,
-        totalAmountTransactions: env.Transaction.reduce(
-          (sum, transaction) => sum + transaction.payment_amount,
-          0,
-        ),
-      }))
 
       const transferValueUseCase = makeTransferValueUseCase()
 
@@ -144,7 +134,7 @@ export const envelopesController = {
         userId,
       })
 
-      res.status(200).send(envelopes)
+      res.status(200).send()
     } catch (err) {
       if (
         err instanceof ResourceNotFoundError ||

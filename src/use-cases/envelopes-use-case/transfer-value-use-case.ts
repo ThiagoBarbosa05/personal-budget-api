@@ -38,7 +38,7 @@ export class TransferValueUseCase {
     if (
       originEnvelope.amount < amountToTransferInCents ||
       amountToTransferInCents >
-        originEnvelope.amount - originEnvelope.totalAmountTransactions
+        originEnvelope.amount - originEnvelope.totalAmountTransactions!
     ) {
       throw new InsufficientFundsToTransfer()
     }

@@ -11,8 +11,12 @@ export const transactionsController = {
   async create(req: Request, res: Response) {
     try {
       const transactionBodySchema = z.object({
-        payment_recipient: z.string(),
-        payment_amount: z.coerce.number(),
+        payment_recipient: z.string().refine((data) => data.trim() !== '', {
+          message: 'Payment recipient is missing',
+        }),
+        payment_amount: z.coerce
+          .number()
+          .min(1, { message: 'amount has to be greater than one.' }),
         envelope_id: z.string().uuid(),
       })
 

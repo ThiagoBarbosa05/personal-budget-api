@@ -29,6 +29,7 @@ export class PrismaEnvelopesRepository implements EnvelopesRepository {
 
     const envelopes = envelopesResponse.map((env) => ({
       ...env,
+      amount: env.amount,
       totalAmountTransactions: env.Transaction.reduce(
         (sum, transaction) => sum + transaction.payment_amount,
         0,

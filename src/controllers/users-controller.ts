@@ -11,24 +11,20 @@ export const usersController = {
       const userBodySchema = z.object({
         username: z.string(),
       })
-
       const { username } = userBodySchema.parse(req.body)
-
       const createUser = MakeCreateUserUseCase()
-
       const { user } = await createUser.execute({ username })
-
       let userId = req.cookies.userId
-
       if (!userId) {
         userId = user.id
-
         res.cookie('userId', userId, {
-          maxAge: 60 * 60 * 24 * 7, // 7 days
+          maxAge: 1000 * 60 * 60 * 24 * 2, // 2 days
           path: '/',
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
         })
       }
-
       res.status(201).send()
     } catch (err) {
       if (err instanceof ZodError) {
@@ -44,6 +40,7 @@ export const usersController = {
       const getUserById = makeGetUserUseCase()
       const { user } = await getUserById.execute(userId)
 
+      console.log(user)
       res.status(200).send({ user })
     } catch (err) {
       if (err instanceof ResourceNotFoundError) {

@@ -11,8 +11,12 @@ import { InsufficientFundsToTransfer } from './use-cases/errors/insufficient-fun
 const app: Application = express()
 
 app.use(bodyParser.json())
-app.use(cors())
+
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+
 app.use(cookieParser())
+
+app.use(express.urlencoded({ extended: true }))
 
 app.use(usersRouter)
 app.use(envelopesRouter)

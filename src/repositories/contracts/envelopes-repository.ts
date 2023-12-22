@@ -26,7 +26,7 @@ export interface TransferValueParams {
 }
 
 export interface EnvelopesResponse extends Envelope {
-  totalAmountTransactions: number
+  totalAmountTransactions?: number
 }
 
 export interface EnvelopesRepository {
