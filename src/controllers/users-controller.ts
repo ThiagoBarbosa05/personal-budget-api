@@ -103,13 +103,11 @@ export const usersController = {
 
   async getUser(req: Request, res: Response) {
     try {
-      const { userId } = req.cookies
+      const getUserUseCase = makeGetUserUseCase()
 
-      const getUserById = makeGetUserUseCase()
-      const { user } = await getUserById.execute(userId)
+      const { user } = await getUserUseCase.execute(req.userId)
 
-      console.log(user)
-      res.status(200).send({ user })
+      res.json({ user })
     } catch (err) {
       if (err instanceof ResourceNotFoundError) {
         return res.status(400).send({ message: err.message })

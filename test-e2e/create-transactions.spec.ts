@@ -1,18 +1,18 @@
 import request from 'supertest'
 import { describe, it } from 'vitest'
-import { createUserToReturnCookie } from '../src/utils/test/create-user-returning-cookie'
+import { createUserForTest } from '../src/utils/test/create-user-for-test'
 import { app } from '../src/app'
 import { prisma } from '../src/lib/prisma'
 
 describe('Create Transaction (E2E)', () => {
   it('should be able to create a transaction', async () => {
-    const { cookie } = await createUserToReturnCookie(app)
+    const { id, token } = await createUserForTest(app)
 
     const envelope = await prisma.envelope.create({
       data: {
         amount: 120050,
         description: 'transaction-1',
-        user_id: cookie,
+        user_id: id,
       },
     })
 
@@ -23,7 +23,7 @@ describe('Create Transaction (E2E)', () => {
         payment_amount: 100.5,
         envelope_id: envelope.id,
       })
-      .set('Cookie', `userId=${cookie}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(201)
   })
 })

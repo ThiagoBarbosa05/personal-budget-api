@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { usersController } from '../controllers/users-controller'
-import { userIdCookieExists } from '../middlewares/user-id-cookie-exists'
+import { verifyJwt } from '../middlewares/verify-jwt'
 
 export const usersRouter: Router = Router()
 
@@ -10,4 +10,4 @@ usersRouter.post('/login', usersController.authenticate)
 
 usersRouter.post('/refresh-token', usersController.refreshToken)
 
-usersRouter.get('/users/me', userIdCookieExists, usersController.getUser)
+usersRouter.get('/users/me', verifyJwt, usersController.getUser)

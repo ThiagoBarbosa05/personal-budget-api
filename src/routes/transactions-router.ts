@@ -1,24 +1,24 @@
 import { Router } from 'express'
 
-import { userIdCookieExists } from '../middlewares/user-id-cookie-exists'
 import { transactionsController } from '../controllers/transactions-controller'
+import { verifyJwt } from '../middlewares/verify-jwt'
 
 export const transactionsRouter: Router = Router()
 
 transactionsRouter.post(
   '/transactions',
-  userIdCookieExists,
+  verifyJwt,
   transactionsController.create,
 )
 
 transactionsRouter.get(
   '/transactions/:envelopeId',
-  userIdCookieExists,
   transactionsController.getTransactions,
 )
 
 transactionsRouter.put(
   '/transactions/:envelopeId/:transactionId',
+  verifyJwt,
   transactionsController.update,
 )
 

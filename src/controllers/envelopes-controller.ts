@@ -23,13 +23,13 @@ export const envelopesController = {
 
       const { description, amount } = envelopeBodySchema.parse(req.body)
 
-      const user_id = req.cookies.userId
+      const userId = req.userId
 
       const createEnvelope = makeCreateEnvelopeUseCase()
 
       if (!createEnvelope) return res.status(400).send()
 
-      await createEnvelope.execute({ description, amount, user_id })
+      await createEnvelope.execute({ description, amount, user_id: userId })
 
       res.status(201).send()
     } catch (err) {
@@ -41,7 +41,7 @@ export const envelopesController = {
 
   async getEnvelopes(req: Request, res: Response) {
     try {
-      const { userId } = req.cookies
+      const { userId } = req
 
       const getEnvelopes = makeGetEnvelopesUseCase()
 
@@ -75,14 +75,19 @@ export const envelopesController = {
   async updateEnvelopeById(req: Request, res: Response) {
     try {
       const envelopeBodySchema = z.object({
-        description: z.string().optional(),
+        description: z
+          .string()
+          .optional()
+          .refine((data) => data?.trim() !== '', {
+            message: 'description is required',
+          }),
         amount: z.number().optional(),
       })
 
       const { amount, description } = envelopeBodySchema.parse(req.body)
 
       const { envelopeId } = req.params
-      const { userId } = req.cookies
+      const { userId } = req
 
       const updateEnvelopeById = makeUpdateEnvelopeUseCase()
 
@@ -102,7 +107,7 @@ export const envelopesController = {
   },
 
   async deleteEnvelopeById(req: Request, res: Response) {
-    const { userId } = req.cookies
+    const { userId } = req
     const { id } = req.params
 
     const deleteEnvelopeById = makeDeleteEnvelopeUseCase()
@@ -123,7 +128,7 @@ export const envelopesController = {
       const { amountToUpdate } = amountToTransferSchema.parse(req.body)
 
       const { amountFrom, amountTo } = req.params
-      const { userId } = req.cookies
+      const { userId } = req
 
       const transferValueUseCase = makeTransferValueUseCase()
 

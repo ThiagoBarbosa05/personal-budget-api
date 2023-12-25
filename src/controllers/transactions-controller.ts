@@ -20,7 +20,7 @@ export const transactionsController = {
         envelope_id: z.string().uuid(),
       })
 
-      const { userId } = req.cookies
+      const { userId } = req
 
       const { envelope_id, payment_amount, payment_recipient } =
         transactionBodySchema.parse(req.body)
@@ -74,7 +74,7 @@ export const transactionsController = {
 
       const { envelopeId, transactionId } = req.params
 
-      const { userId } = req.cookies
+      const { userId } = req
 
       const updateTransactionUseCase = makeUpdateTransactionUseCase()
 
