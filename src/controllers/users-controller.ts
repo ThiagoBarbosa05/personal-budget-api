@@ -36,11 +36,12 @@ export const usersController = {
       const token = generateAccessToken(user.id)
       const refreshToken = generateRefreshToken(user.id)
 
+      console.log(user)
+
       res.cookie('refreshToken', refreshToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'none',
-        secure: true,
       })
 
       res.status(201).send({ token, refreshToken })
@@ -71,7 +72,6 @@ export const usersController = {
         path: '/',
         httpOnly: true,
         sameSite: 'none',
-        secure: true,
       })
 
       res.status(201).send({ token, refreshToken })
