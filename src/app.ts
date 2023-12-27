@@ -25,8 +25,16 @@ app.use(usersRouter)
 app.use(envelopesRouter)
 app.use(transactionsRouter)
 
-app.get('/users', async (req, res) => {
-  const users = await prisma.user.findMany()
+app.post('/users', async (req, res) => {
+  const { email, password, username } = req.body
+
+  const users = await prisma.user.create({
+    data: {
+      email,
+      password,
+      username,
+    },
+  })
 
   res.send(users)
 })
