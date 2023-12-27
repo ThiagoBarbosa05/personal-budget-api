@@ -40,9 +40,10 @@ export const usersController = {
         path: '/',
         httpOnly: true,
         sameSite: 'none',
+        secure: true,
       })
 
-      res.status(201).send({ token })
+      res.status(201).send({ token, refreshToken })
     } catch (err) {
       if (err instanceof ZodError) {
         return res.status(400).send({ message: err.message })
@@ -69,7 +70,8 @@ export const usersController = {
       res.cookie('refreshToken', refreshToken, {
         path: '/',
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'none',
+        secure: true,
       })
 
       res.status(201).send({ token, refreshToken })
