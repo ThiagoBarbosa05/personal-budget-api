@@ -39,7 +39,7 @@ export const usersController = {
       res.cookie('refreshToken', refreshToken, {
         path: '/',
         httpOnly: true,
-        sameSite: true,
+        sameSite: 'none',
       })
 
       res.status(201).send({ token })
@@ -69,10 +69,10 @@ export const usersController = {
       res.cookie('refreshToken', refreshToken, {
         path: '/',
         httpOnly: true,
-        sameSite: true,
+        sameSite: 'lax',
       })
 
-      res.status(201).send({ token })
+      res.status(201).send({ token, refreshToken })
     } catch (err) {
       if (err instanceof InvalidCredentialsError) {
         return res.status(401).send({ message: err.message })

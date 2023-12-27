@@ -27,6 +27,11 @@ export class GetEnvelopeByIdUseCase {
       throw new ResourceNotFoundError()
     }
 
-    return { envelope }
+    return {
+      envelope: {
+        ...envelope,
+        amount: envelope.amount / 100,
+      },
+    }
   }
 }
