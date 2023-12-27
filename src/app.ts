@@ -7,8 +7,11 @@ import { usersRouter } from './routes/users-router'
 import { envelopesRouter } from './routes/envelopes-router'
 import { transactionsRouter } from './routes/transactions-router'
 import { InsufficientFundsToTransfer } from './use-cases/errors/insufficient-funds-to-transfer'
+import { PrismaClient } from '@prisma/client'
 
 const app: Application = express()
+
+const prisma = new PrismaClient()
 
 app.use(bodyParser.json())
 
@@ -21,6 +24,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(usersRouter)
 app.use(envelopesRouter)
 app.use(transactionsRouter)
+
+app.get('/users', async (req, res) => {
+  const users = await prisma.user.findMany()
+
+  res.send(users)
+})
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof InsufficientFundsToTransfer) {
