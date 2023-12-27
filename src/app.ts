@@ -16,10 +16,6 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
 
 app.use(cookieParser())
 
-app.get('/teste', (req, res) => {
-  res.send('hello world')
-})
-
 app.use(express.urlencoded({ extended: true }))
 
 app.use(usersRouter)
