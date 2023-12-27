@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { ZodError, z } from 'zod'
+import bcryptjs from 'bcryptjs'
 
 import { makeCreateUserUseCase } from '../use-cases/factories/make-create-user-use-case'
 import { makeGetUserUseCase } from '../use-cases/factories/make-get-user-use-case'
@@ -9,7 +10,10 @@ import { generateAccessToken, generateRefreshToken } from '../lib/jwt'
 import { InvalidCredentialsError } from '../use-cases/errors/invalid-credentials'
 import { verify } from 'jsonwebtoken'
 import { env } from '../env'
+import { UserAlreadyExistsError } from '../use-cases/errors/user-already-exists'
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
 interface JwtPayload {
   userId: string
 }
@@ -29,24 +33,35 @@ export const usersController = {
 
       const { username, email, password } = userBodySchema.parse(req.body)
 
-      const createUser = makeCreateUserUseCase()
+      // const createUser = makeCreateUserUseCase()
 
-      const { user } = await createUser.execute({ username, email, password })
+      // const { user } = await createUser.execute({ username, email, password })
 
-      const token = generateAccessToken(user.id)
-      const refreshToken = generateRefreshToken(user.id)
+      // const token = generateAccessToken(user.id)
+      // const refreshToken = generateRefreshToken(user.id)
 
-      console.log(user)
+      // console.log(user)
 
-      res.cookie('refreshToken', refreshToken, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'none',
+      // res.cookie('refreshToken', refreshToken, {
+      //   path: '/',
+      //   httpOnly: true,
+      //   sameSite: 'none',
+      // })
+
+      // res.status(201).send({ token, refreshToken })
+      const password_hash = await bcryptjs.hash(password, 6)
+
+      const user = await prisma.user.create({
+        data: {
+          username,
+          email,
+          password: password_hash,
+        },
       })
 
-      res.status(201).send({ token, refreshToken })
+      res.send({ user })
     } catch (err) {
-      if (err instanceof ZodError) {
+      if (err instanceof ZodError || err instanceof UserAlreadyExistsError) {
         return res.status(400).send({ message: err.message })
       }
     }
