@@ -29,21 +29,21 @@ export const usersController = {
 
       const { username, email, password } = userBodySchema.parse(req.body)
 
-      // const createUser = makeCreateUserUseCase()
+      const createUser = makeCreateUserUseCase()
 
-      // const { user } = await createUser.execute({ username, email, password })
+      const { user } = await createUser.execute({ username, email, password })
 
-      // const token = generateAccessToken(user.id)
-      // const refreshToken = generateRefreshToken(user.id)
+      const token = generateAccessToken(user.id)
+      const refreshToken = generateRefreshToken(user.id)
 
-      // res.cookie('refreshToken', refreshToken, {
-      //   path: '/',
-      //   httpOnly: true,
-      //   sameSite: 'none',
-      //   secure: true,
-      // })
+      res.cookie('refreshToken', refreshToken, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      })
 
-      res.status(201).send({ username, email, password })
+      res.status(201).send({ token, refreshToken })
     } catch (err) {
       if (err instanceof ZodError) {
         return res.status(400).send({ message: err.message })
