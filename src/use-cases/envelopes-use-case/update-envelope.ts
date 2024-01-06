@@ -1,5 +1,6 @@
 import { EnvelopesRepository } from '../../repositories/contracts/envelopes-repository'
 import { Envelope } from '../../types'
+import { InsufficientFundsToTransfer } from '../errors/insufficient-funds-to-transfer'
 import { ResourceNotFoundError } from '../errors/resource-not-found'
 
 interface EnvelopeUseCaseRequest {
@@ -23,6 +24,23 @@ export class UpdateEnvelopeUseCase {
     description,
   }: EnvelopeUseCaseRequest): Promise<EnvelopeUseCaseResponse> {
     const amountInCents = amount && amount * 100
+
+    const envelopeToUpdate = await this.envelopesRepository.getEnvelopeById({
+      id,
+      userId,
+    })
+
+    if (!envelopeToUpdate) {
+      throw new ResourceNotFoundError()
+    }
+
+    if (
+      envelopeToUpdate.totalAmountTransactions &&
+      amount &&
+      envelopeToUpdate.totalAmountTransactions > amount
+    ) {
+      throw new InsufficientFundsToTransfer()
+    }
 
     const envelope = await this.envelopesRepository.updateEnvelopeById({
       id,

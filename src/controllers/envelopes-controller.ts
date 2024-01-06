@@ -100,7 +100,11 @@ export const envelopesController = {
 
       res.status(200).send()
     } catch (err) {
-      if (err instanceof ResourceNotFoundError || err instanceof ZodError) {
+      if (
+        err instanceof ResourceNotFoundError ||
+        err instanceof ZodError ||
+        err instanceof InsufficientFundsToTransfer
+      ) {
         return res.status(400).send({ message: err.message })
       }
     }
