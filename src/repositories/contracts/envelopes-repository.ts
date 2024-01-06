@@ -35,7 +35,7 @@ export interface EnvelopesRepository {
   getEnvelopeById({
     id,
     userId,
-  }: GetEnvelopeByIdParams): Promise<Envelope | null>
+  }: GetEnvelopeByIdParams): Promise<EnvelopesResponse | null>
   updateEnvelopeById(data: UpdateEnvelopeByIdParams): Promise<Envelope | null>
   deleteEnvelopeById({ id, userId }: DeleteEnvelopeByIdParams): Promise<void>
   transferValue({

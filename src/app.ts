@@ -7,29 +7,26 @@ import { usersRouter } from './routes/users-router'
 import { envelopesRouter } from './routes/envelopes-router'
 import { transactionsRouter } from './routes/transactions-router'
 import { InsufficientFundsToTransfer } from './use-cases/errors/insufficient-funds-to-transfer'
-import { PrismaClient } from '@prisma/client'
 
 const app: Application = express()
-
-const prisma = new PrismaClient()
 
 app.use(bodyParser.json())
 
 const allowedOrigins: string[] = [
   'http://localhost:3000',
   'https://personal-budget-web.vercel.app',
-];
+]
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin: any, callback: any) => {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'))
     }
   },
-  credentials: true
-};
+  credentials: true,
+}
 
 app.use(cors(corsOptions))
 
@@ -40,7 +37,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(usersRouter)
 app.use(envelopesRouter)
 app.use(transactionsRouter)
-
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof InsufficientFundsToTransfer) {

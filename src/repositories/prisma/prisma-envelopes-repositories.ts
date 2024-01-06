@@ -40,12 +40,25 @@ export class PrismaEnvelopesRepository implements EnvelopesRepository {
   }
 
   async getEnvelopeById({ id, userId }: GetEnvelopeByIdParams) {
-    const envelope = await prisma.envelope.findFirst({
+    const envelopeResponse = await prisma.envelope.findFirst({
       where: {
         id,
         user_id: userId,
       },
+      include: {
+        Transaction: true,
+      },
     })
+
+    if (!envelopeResponse) return null
+
+    const envelope = {
+      ...envelopeResponse,
+      totalAmountTransactions: envelopeResponse.Transaction.reduce(
+        (sum, transaction) => sum + transaction.payment_amount,
+        0,
+      ),
+    }
 
     return envelope
   }
