@@ -15,7 +15,23 @@ const prisma = new PrismaClient()
 
 app.use(bodyParser.json())
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+const allowedOrigins: string[] = [
+  'http://localhost:3000', // Adicione suas URLs permitidas aqui
+  'https://meuoutrodominio.com',
+];
+
+const corsOptions: cors.CorsOptions = {
+  origin: (origin: any, callback: any) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
+app.use(cors(corsOptions))
 
 app.use(cookieParser())
 
@@ -25,19 +41,6 @@ app.use(usersRouter)
 app.use(envelopesRouter)
 app.use(transactionsRouter)
 
-app.post('/users', async (req, res) => {
-  const { email, password, username } = req.body
-
-  const users = await prisma.user.create({
-    data: {
-      email,
-      password,
-      username,
-    },
-  })
-
-  res.send(users)
-})
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof InsufficientFundsToTransfer) {
