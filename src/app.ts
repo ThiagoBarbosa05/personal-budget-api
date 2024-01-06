@@ -16,8 +16,8 @@ const prisma = new PrismaClient()
 app.use(bodyParser.json())
 
 const allowedOrigins: string[] = [
-  'http://localhost:3000', // Adicione suas URLs permitidas aqui
-  'https://meuoutrodominio.com',
+  'http://localhost:3000',
+  'https://personal-budget-web.vercel.app',
 ];
 
 const corsOptions: cors.CorsOptions = {
