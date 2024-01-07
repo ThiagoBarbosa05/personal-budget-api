@@ -36,8 +36,8 @@ export class UpdateEnvelopeUseCase {
 
     if (
       envelopeToUpdate.totalAmountTransactions &&
-      amount &&
-      envelopeToUpdate.totalAmountTransactions > amount
+      amountInCents &&
+      envelopeToUpdate.totalAmountTransactions > amountInCents
     ) {
       throw new InsufficientFundsToTransfer()
     }
