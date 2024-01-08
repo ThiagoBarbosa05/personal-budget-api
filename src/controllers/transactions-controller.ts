@@ -78,8 +78,6 @@ export const transactionsController = {
 
       const updateTransactionUseCase = makeUpdateTransactionUseCase()
 
-      res.status(200).send()
-
       await updateTransactionUseCase.execute({
         envelope_id: envelopeId,
         transaction_id: transactionId,
@@ -87,6 +85,8 @@ export const transactionsController = {
         payment_amount,
         payment_recipient,
       })
+
+      res.status(200).send()
     } catch (err) {
       if (
         err instanceof InsufficientFundsToTransfer ||
