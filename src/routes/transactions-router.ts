@@ -18,6 +18,7 @@ transactionsRouter.get(
 
 transactionsRouter.put(
   '/transactions/:envelopeId/:transactionId',
+  verifyJwt,
   transactionsController.update,
 )
 
