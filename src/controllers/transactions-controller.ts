@@ -93,7 +93,7 @@ export const transactionsController = {
         err instanceof ResourceNotFoundError ||
         err instanceof ZodError
       ) {
-        res.send(err.message)
+        res.status(400).send(err.message)
       }
     }
   },
