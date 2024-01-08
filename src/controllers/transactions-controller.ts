@@ -78,7 +78,7 @@ export const transactionsController = {
 
       const updateTransactionUseCase = makeUpdateTransactionUseCase()
 
-      res.status(200).send()
+      res.status(200).send({ message: 'success' })
 
       await updateTransactionUseCase.execute({
         envelope_id: envelopeId,
