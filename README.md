@@ -1,8 +1,8 @@
 ![Logo](./public/logo.png)
 
 
-# Find a friend API
-Esta é uma simples aplicação desenvolvida como solução do desafio do módulo 3 da trilha de node.js da Rocketseat, onde é possível se registrar como uma ORG para cadastrar alguns pets para adoção, o usuário que deseja adotar algum pet consegue filtra-los pelas caracteristicas e pela cidade da ORG. Essa aplicação foi construída usando SOLID, que representa um conjunto de cinco princípios de design de software orientado a objetos destinados a criar sistemas mais compreensíveis, flexíveis e sustentáveis, e também usando a abordagem de desenvolvimento de software TDD (Test-Driven Development). 
+# Personal Budget Api 
+Esta é uma simples aplicação desenvolvida que permite o usuário a criar e gerenciar um orçamento pessoal, usando os princípios do Envelope Budgeting. 
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](/LICENSE)
 
