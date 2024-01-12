@@ -110,7 +110,12 @@ export const usersController = {
 
       const { user } = await getUserUseCase.execute(req.userId)
 
-      res.json({ user })
+      res.json({
+        user: {
+          ...user,
+          password: null,
+        },
+      })
     } catch (err) {
       if (err instanceof ResourceNotFoundError) {
         return res.status(400).send({ message: err.message })
