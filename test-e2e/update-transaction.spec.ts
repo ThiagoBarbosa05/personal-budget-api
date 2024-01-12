@@ -18,7 +18,7 @@ describe('Update transaction (E2E)', () => {
 
     const createTransaction = await prisma.transaction.create({
       data: {
-        payment_amount: 0,
+        payment_amount: 12343,
         payment_recipient: 'transaction-1',
         envelope_id: createEnvelope.id,
       },
@@ -27,6 +27,7 @@ describe('Update transaction (E2E)', () => {
     await request(app)
       .put(`/transactions/${createEnvelope.id}/${createTransaction.id}`)
       .set('Authorization', `Bearer ${token}`)
+      .send({ payment_amount: 124.54 })
       .expect(200)
   })
 })
