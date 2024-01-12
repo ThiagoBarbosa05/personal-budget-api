@@ -35,10 +35,10 @@ Tecnologias utilizadas para construir esse Projeto
 
 ```bash
   # clone o repositório do projeto
-  git clone https://github.com/ThiagoBarbosa05/find-a-friend-api.git
+  git clone https://github.com/ThiagoBarbosa05/personal-budget-api.git
 
   # Entre no diretório do projeto clonado
-  cd find-a-friend-api
+  cd personal-budget-api
 
   # Instale as dependências do projeto
   npm install
@@ -47,8 +47,8 @@ Tecnologias utilizadas para construir esse Projeto
   docker-compose up -d
 
   ## Se não estiver o docker instalado na sua máquina pode seguir o guia de instalação
-    disponível na guia de instalação no site oficial do docker ou pode usar 
-    o banco de dados relacional de sua preferência
+  ## disponível no site oficial do docker ou pode usar 
+  ## o banco de dados relacional de sua preferência
 
 
   ## Rode as migrations para o banco de dados
@@ -61,8 +61,6 @@ Tecnologias utilizadas para construir esse Projeto
 ## Variáveis de Ambiente
 
 Para rodar esse projeto, você vai precisar adicionar algumas variáveis de ambiente no arquivo `.env`, você encontrará um exemplo de como prenncher essas variáveis no seguinte arquivo `.env.example`
-
-
 
 
 ## Rodando os testes
