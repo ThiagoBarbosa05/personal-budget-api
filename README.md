@@ -62,8 +62,11 @@ Tecnologias utilizadas para construir esse Projeto
     
 ## Variáveis de Ambiente
 
-Para rodar esse projeto, você vai precisar adicionar algumas variáveis de ambiente no arquivo `.env`, você encontrará um exemplo de como prenncher essas variáveis no seguinte arquivo `.env.example`
+Para rodar esse projeto, você vai precisar adicionar algumas variáveis de ambiente no arquivo `.env`
 
++ Conexão com o banco de dados: `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/personalbudget?schema=public"`
+
++ Segredo JWT: `SECRET_KEY_JWT="digite_aqui_seu_segredo"`
 
 ## Rodando os testes
 
@@ -75,12 +78,14 @@ Para rodar os testes, siga os seguintes passos:
 
   # Para rodar os testes end-to-end
   npm run test:e2e
+
+  # Obs: Os testes end-to-end não irá popular seu banco de dados.
 ```
 
 
 ## Documentação da API
 
-### Registra um usuário como uma ORG
+### Registra um usuário
 
 ```
   POST /register
@@ -91,16 +96,9 @@ Para rodar os testes, siga os seguintes passos:
 
       ```json
         {
-          "name": "Jonh Doe",
+          "username": "John Doe",
           "email": "Johndoe@email.com",
           "password": "javascript",
-          "whatsapp_number": "22999999999",
-          "postal_code": "20910025"
-          
-          # Not Required
-          "street": "Avenida do Exército",
-          "city": "Rio de Janeiro",
-          "state": "RJ",
         }
       ```
 + Response 201
@@ -108,9 +106,10 @@ Para rodar os testes, siga os seguintes passos:
     + Body
 
       ```json
-          {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw"
-          }
+      {
+        "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5NWI0N2I1ZS02N2NjLTQxMDktOGU5OS1hZWExMzMxZjA5M2UiLCJpYXQiOjE3MDUwOTczMzcsImV4cCI6MTcwNTA5NzkzN30.MhixDbV-eSca4JFTPhiPM_k1OjJxs8erX6MdQkL-fBc",
+        "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5NWI0N2I1ZS02N2NjLTQxMDktOGU5OS1hZWExMzMxZjA5M2UiLCJpYXQiOjE3MDUwOTczMzd9.cGZRta_fQ8j7XuZCrhTE9twkOtktzvQx9c-vdhO_brU"
+      }
       ```
     
     + Header 
@@ -143,7 +142,8 @@ Para rodar os testes, siga os seguintes passos:
 
       ```json
           {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw"
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMmE4NjBiZC1iMWVkLTRkZjgtOWMwOS02MjUzMzJkMWQyZjkiLCJpYXQiOjE3MDUwOTc0MjAsImV4cCI6MTcwNTA5ODAyMH0.iZxHCSOaxwMdKdQRKEfAS7TIvZrDf1v9urwCYK6Xg4U",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMmE4NjBiZC1iMWVkLTRkZjgtOWMwOS02MjUzMzJkMWQyZjkiLCJpYXQiOjE3MDUwOTc0MjB9.MC-VvxcUIW13748cdtJbPZLNkc5AJ4XXjxnBszTxr8Q"
           }
       ```
     
@@ -158,51 +158,58 @@ Para rodar os testes, siga os seguintes passos:
 ### Refresh token do usuário
 
 ```
-  PATCH /token/refresh
-```
-
-+ Response 200
-
-  ```json
-    {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNDAwOTY3NTMtNWRkNy00ZGM4LWJmNmEtNjdhMTI1NTRhODIwIiwiaWF0IjoxNzA0NzUyNjc3LCJleHAiOjE3MDQ3NTMyNzd9.0bY3L41z1fhihoOfBCTIXPd-3e-hwhTdRqMI17VlTmw"
-    }
-  ```
-
-### Registrar um pet
-
-```
-  POST /pets
+  POST /refresh-token
 ```
 
 + Request (application/json)
 
-    + Body 
+    + Body
+  
+  ```json
+    {
+      "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMmE4NjBiZC1iMWVkLTRkZjgtOWMwOS02MjUzMzJkMWQyZjkiLCJpYXQiOjE3MDUwOTc0MjB9.MC-VvxcUIW13748cdtJbPZLNkc5AJ4XXjxnBszTxr8Q"
+    }
+  ```
 
++ Response 200
 
+    + body
+ 
         ```json
           {
-            "ageRange": "CUB",
-            "name": "pet-3",
-            "size": "SMALL",
-            "energy": "MEDIUM",
-            "independenceLevel": "MEDIUM",
-            "environment": "BROAD",
-
-            # Not required
-            "about": "pet very cute",
-            "requirements": [
-                "care",
-                "food",
-                "water"
-            ]
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwMmE4NjBiZC1iMWVkLTRkZjgtOWMwOS02MjUzMzJkMWQyZjkiLCJpYXQiOjE3MDUwOTc3NDksImV4cCI6MTcwNTA5ODM0OX0.519xVIZPGCW2u67KytBRZrpdpirQQTKAsBkeQArO6yg"
           }
         ```
+
+### Recupera um usuário
+
+```
+  GET /pets
+```
+
++ Request
 
     + Header
 
         ```
         Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
++ Response 200
+
+    + Body 
+
+        ```json
+            {
+              "user": {
+                  "id": "02a860bd-b1ed-4df8-9c09-625332d1d2f9",
+                  "username": "hatake",
+                  "email": "thiago@email.com",
+                  "password": null,
+                  "created_at": "2024-01-12T21:22:34.864Z",
+                  "updated_at": "2024-01-12T21:22:34.864Z"
+              }
+            }
         ```
 
 ### Buscar pets disponíveis em uma cidade
