@@ -203,14 +203,100 @@ Para rodar os testes, siga os seguintes passos:
             {
               "user": {
                   "id": "02a860bd-b1ed-4df8-9c09-625332d1d2f9",
-                  "username": "hatake",
-                  "email": "thiago@email.com",
+                  "username": "John Doe",
+                  "email": "johndoe@email.com",
                   "password": null,
                   "created_at": "2024-01-12T21:22:34.864Z",
                   "updated_at": "2024-01-12T21:22:34.864Z"
               }
             }
         ```
+
+### Cria um envelope
+
+```
+  POST /envelopes
+```
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+  + Body (Application/json)
+
+      ```json
+        {          
+          "description": "envelope 1",
+          "amount": 1249.45
+        }
+      ```
+    
+### Recupera uma lista de envelopes de um usuário
+
+```
+  GET /envelopes
+```
+
++ Request
+
+    + Header
+
+        ```
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
++ Response 200
+
+    + Body 
+
+        ```json
+            {
+              "envelopes": [
+                  {
+                      "id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1",
+                      "description": "envelope-1",
+                      "amount": 123895,
+                      "created_at": "2024-01-12T21:22:57.844Z",
+                      "updated_at": "2024-01-12T21:29:28.009Z",
+                      "user_id": "02a860bd-b1ed-4df8-9c09-625332d1d2f9",
+                      "Transaction": [
+                          {
+                              "id": "88f7a905-9af5-404b-a656-cd891050045a",
+                              "payment_recipient": "example",
+                              "payment_amount": 1050,
+                              "created_at": "2024-01-12T21:24:33.925Z",
+                              "updated_at": "2024-01-12T21:29:28.004Z",
+                              "envelope_id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1"
+                          }
+                      ],
+                      "totalAmountTransactions": 1050
+                  },
+                  {
+                      "id": "737cb456-be3f-40f4-ad48-f6c1a41622aa",
+                      "description": "App Development",
+                      "amount": 124945,
+                      "created_at": "2024-01-12T22:33:01.316Z",
+                      "updated_at": "2024-01-12T22:33:01.316Z",
+                      "user_id": "02a860bd-b1ed-4df8-9c09-625332d1d2f9",
+                      "Transaction": [],
+                      "totalAmountTransactions": 0
+                  }
+              ]
+          }
+        ```
+
+
+
+
+
+
+
+
+
+
 
 ### Buscar pets disponíveis em uma cidade
 
