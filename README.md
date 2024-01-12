@@ -82,6 +82,17 @@ Para rodar os testes, siga os seguintes passos:
   # Obs: Os testes end-to-end não irá popular seu banco de dados.
 ```
 
+## Estrutura do Projeto
+  
+  - `controllers`: Requisições HTTP.
+  - `env`: Validação das variáveis de ambiente.
+  - `repositories`: Contém a lógica para interagir com o banco de dados.
+  - `types`: Contém os tipos typescript usados na aplicação.
+  - `use-case`: Contém a lógica de negócios da aplicação.
+
+## Banco de dados
+
+Este projeto usa Prisma como ORM e PostgreSQL como banco de dados. A configuração do banco de dados pode ser encontrada no arquivo prisma/schema.prisma.
 
 ## Documentação da API
 
@@ -496,7 +507,7 @@ Para rodar os testes, siga os seguintes passos:
 | `transactionId`      | `string` | **Obrigatório**. ID da transação a ser deletada |
 
 
-    ## Autores
+ ## Autores
 
 - [@ThiagoBarbosa05](https://github.com/ThiagoBarbosa05)
 
