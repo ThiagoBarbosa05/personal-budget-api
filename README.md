@@ -1,8 +1,5 @@
 ![Logo](./public/logo.png)
 
-
-# Personal Budget Api 
-
 API de orçamento pessoal construída com Node.js e TypeScript. Esta API permite que os usuários criem, atualizem e recuperem informações sobre seus orçamentos. Esse projeto foi construído usando o acrônimo SOLID e a abordagem de desenvolvimento TDD, "Test-Driven Development" (Desenvolvimento Orientado a Testes). 
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](/LICENSE)
