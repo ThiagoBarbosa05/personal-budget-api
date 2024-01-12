@@ -13,7 +13,7 @@ Tecnologias utilizadas para construir esse Projeto
 
   + Dependências de desenvolvimento
 
-      - ![TypeScript](https://www.typescriptlang.org/)
+      - [TypeScript](https://www.typescriptlang.org/)
         
 
 
