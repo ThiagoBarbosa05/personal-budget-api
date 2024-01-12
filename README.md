@@ -56,6 +56,8 @@ Tecnologias utilizadas para construir esse Projeto
 
   ## Por fim para rodar o projeto
   npm run dev
+
+  ## A aplicação estará rodando em http://localhost:4000
 ```
     
 ## Variáveis de Ambiente
