@@ -2,43 +2,19 @@
 
 
 # Personal Budget Api 
-Esta é uma simples aplicação desenvolvida que permite o usuário a criar e gerenciar um orçamento pessoal, usando os princípios do Envelope Budgeting. 
+
+API de orçamento pessoal construída com Node.js e TypeScript. Esta API permite que os usuários criem, atualizem e recuperem informações sobre seus orçamentos. Esse projeto foi construído usando o acrônimo SOLID e a abordagem de desenvolvimento TDD, "Test-Driven Development" (Desenvolvimento Orientado a Testes). 
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](/LICENSE)
 
 ## 🛠 Tecnologias
 
-The following tools were used to build the project:
-  
-![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+Tecnologias utilizadas para construir esse Projeto
 
-![ESLint](https://img.shields.io/badge/ESLint-4B3263?style=for-the-badge&logo=eslint&logoColor=white)
+  + Dependências de desenvolvimento
 
-![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
-
-![Fastify](https://img.shields.io/badge/fastify-%23000000.svg?style=for-the-badge&logo=fastify&logoColor=white)
-
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white) 
-
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-
-## Regras da aplicação
-
-- Deve ser possível cadastrar um pet
-- Deve ser possível listar todos os pets disponíveis para adoção em uma cidade
-- Deve ser possível filtrar pets por suas características
-- Deve ser possível visualizar detalhes de um pet para adoção
-- Deve ser possível se cadastrar como uma ORG
-- Deve ser possível realizar login como uma ORG
-
-## Regras de negócio
-
-- Para listar os pets, obrigatoriamente precisamos informar a cidade
-- Uma ORG precisa ter um endereço e um número de WhatsApp
-- Um pet deve estar ligado a uma ORG
-- O usuário que quer adotar, entrará em contato com a ORG via WhatsApp
-- Todos os filtros, além da cidade, são opcionais
-- Para uma ORG acessar a aplicação como admin, ela precisa estar logada
+      - ![TypeScript](https://www.typescriptlang.org/)
+        
 
 
 ## Instalação
