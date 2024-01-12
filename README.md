@@ -184,7 +184,7 @@ Para rodar os testes, siga os seguintes passos:
 ### Recupera um usuário
 
 ```
-  GET /pets
+  GET /users/me
 ```
 
 + Request
@@ -288,126 +288,213 @@ Para rodar os testes, siga os seguintes passos:
           }
         ```
 
-
-
-
-
-
-
-
-
-
-
-### Buscar pets disponíveis em uma cidade
+### Recupera um envelope especifico
 
 ```
-  GET /pets/find/:city
+  GET /envelopes/:id
 ```
 
 | Parâmetro   | Tipo       | Descrição                                   |
 | :---------- | :--------- | :------------------------------------------ |
-| `city`      | `string` | **Obrigatório**. Cidade para fazer a busca dos pets |
+| `id`      | `string` | **Obrigatório**. ID do envelope |
 
-| Parâmetros de filtragem   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
-| `size`      | `string` | **Opcional**. filtrar por tamanho. Ex: `MEDIUM` |
-| `ageRange`      | `string` | **Opcional**. filtrar por idade. Ex: `ADULT`|
-| `independenceLevel`      | `string` | **Opcional**. filtrar por nível de dependência. Ex: `LOW`|
-| `energy`      | `string` | **Opcional**. filtrar por nível de energia. Ex: `HIGH`|
++ Request
 
-+ response 200
+    + Header
 
-  ```json
-    {
-      "pets": [
-        {
-            "id": "115ff322-f0c1-4f17-ade5-c0cbdea48364",
-            "name": "pet-2",
-            "about": "pet very cute",
-            "age_range": "CUB",
-            "size": "GIANT",
-            "energy": "MEDIUM",
-            "independence_level": "MEDIUM",
-            "environment": "BROAD",
-            "requirements": [
-                "care",
-                "food",
-                "water"
-            ],
-            "user_id": "45b5e768-0df7-421f-999b-cc11fc8ac072",
-            "created_at": "2024-01-04T00:04:35.166Z"
-        },
-        {
-            "id": "ec3c615f-2073-41c7-8459-29a2170143bc",
-            "name": "pet-1",
-            "about": "pet very cute",
-            "age_range": "CUB",
-            "size": "SMALL",
-            "energy": "MEDIUM",
-            "independence_level": "MEDIUM",
-            "environment": "BROAD",
-            "requirements": [
-                "care",
-                "food",
-                "water"
-            ],
-            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
-            "created_at": "2024-01-03T22:45:12.260Z"
-        },
-        {
-            "id": "15b98a66-d43b-49e3-b69e-dcf9bffea9e9",
-            "name": "pet-1",
-            "about": "pet very cute",
-            "age_range": "CUB",
-            "size": "MEDIUM",
-            "energy": "MEDIUM",
-            "independence_level": "MEDIUM",
-            "environment": "BROAD",
-            "requirements": [
-                "care",
-                "food",
-                "water"
-            ],
-            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
-            "created_at": "2024-01-03T22:24:22.153Z"
-        }
-      ]
-    }
-  ```
-
-### Buscar detalhes de um pet
-
-```
-  GET /pets/:id
-```
-
-| Parâmetro   | Tipo       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
-| `id`      | `string` | **Obrigatório**. ID do pet |
+        ```
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
 
 + Response 200
 
     ```json
-      {
-        "pet": {
-            "id": "ec3c615f-2073-41c7-8459-29a2170143bc",
-            "name": "pet-1",
-            "about": "pet very cute",
-            "age_range": "CUB",
-            "size": "SMALL",
-            "energy": "MEDIUM",
-            "independence_level": "MEDIUM",
-            "environment": "BROAD",
-            "requirements": [
-                "care",
-                "food",
-                "water"
-            ],
-            "user_id": "eda529ca-1938-48d8-ab28-9f3db17186ec",
-            "created_at": "2024-01-03T22:45:12.260Z"
+          {
+            "envelope": {
+                "id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1",
+                "description": "App Development",
+                "amount": 1238.95,
+                "created_at": "2024-01-12T21:22:57.844Z",
+                "updated_at": "2024-01-12T21:29:28.009Z",
+                "user_id": "02a860bd-b1ed-4df8-9c09-625332d1d2f9",
+                "Transaction": [
+                    {
+                        "id": "88f7a905-9af5-404b-a656-cd891050045a",
+                        "payment_recipient": "example",
+                        "payment_amount": 1050,
+                        "created_at": "2024-01-12T21:24:33.925Z",
+                        "updated_at": "2024-01-12T21:29:28.004Z",
+                        "envelope_id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1"
+                    }
+                ],
+                "totalAmountTransactions": 1050
+            }
           }
-        }
     ```
+
+```
+  PUT /envelopes/:envelopeId
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `envelopeId`      | `string` | **Obrigatório**. ID do envelope a ser atualizado |
+
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+  + Body (Application/json)
+
+      ```json
+        {          
+          "description": "envelope updated",
+          "amount": 124.45
+        }
+      ```
+
+### Deleta um envelope
+
+```
+  DELETE /envelopes/:id
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `id`      | `string` | **Obrigatório**. ID do envelope a ser deletado |
+
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+### Transfer valor de um envelope para outro
+
+```
+  POST /envelopes/transfer/:amountFrom/:amountTo
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `amountFrom`      | `string` | **Obrigatório**. ID do envelope doador |
+| `amountTo`      | `string` | **Obrigatório**. ID do envelope recebedor |
+
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+  + Body (Application/json)
+
+      ```json
+        {          
+          "amountToUpdate": 123.45
+        }
+      ```
+
+### Cria uma transação
+
+```
+  POST /transactions
+```
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+  + Body (Application/json)
+
+      ```json
+        {          
+          "payment_recipient": "transaction 1",
+          "payment_amount": 32.50,
+          "envelope_id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1"
+        }
+      ```
+
+
+### Recupera todas as transações de um envelope
+
+```
+  GET /transactions/:envelopeId
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `envelopeId`      | `string` | **Obrigatório**. ID do envelope |
+
+
++ Response 200
+
+  + Body (Application/json)
+
+      ```json
+        {
+          "transactions": [
+              {
+                  "id": "88f7a905-9af5-404b-a656-cd891050045a",
+                  "payment_recipient": "adwd",
+                  "payment_amount": 1050,
+                  "created_at": "2024-01-12T21:24:33.925Z",
+                  "updated_at": "2024-01-12T21:29:28.004Z",
+                  "envelope_id": "d3cd612e-baf9-4b8d-b98c-2541a3c128e1"
+              }
+          ]
+        }
+      ```
+
+
+### Atualiza uma transação
+
+```
+  PUT /transactions/:envelopeId/:transactionId
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `envelopeId`      | `string` | **Obrigatório**. ID do envelope |
+| `transactionId`      | `string` | **Obrigatório**. ID da transação a ser atualizada |
+
++ Request
+
+  + Header
+
+        ```
+          Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiT1JHIiwic3ViIjoiNTNhN2I0NGItYjQ4YS00MjBiLWEyYWQtNmJiOTEwMjZlNTgwIiwiaWF0IjoxNzA0NzUxNTUyLCJleHAiOjE3MDQ3NTIxNTJ9.TnMbzx37iAPKwM0Ynj_I-WtTQs_dfjwGUT5TN7Vf_mw
+        ```
+
+  + Body (Application/json)
+
+      ```json
+        {          
+           "payment_recipient": "transaction updated",
+           "payment_amount": 1050,
+        }
+      ```
+
+### Deleta um envelope
+
+```
+  DELETE /transaction/:transactionId
+```
+
+| Parâmetro   | Tipo       | Descrição                                   |
+| :---------- | :--------- | :------------------------------------------ |
+| `transactionId`      | `string` | **Obrigatório**. ID da transação a ser deletada |
+
 
     ## Autores
 
