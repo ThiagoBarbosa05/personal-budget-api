@@ -14,9 +14,23 @@ Tecnologias utilizadas para construir esse Projeto
   + Dependências de desenvolvimento
 
       - [TypeScript](https://www.typescriptlang.org/)
-        
+      - [Eslint](https://eslint.org/)
+      - [Supertest](https://www.npmjs.com/package/supertest)
+      - [Vitest](https://vitest.dev/)
+      - [Docker](https://www.docker.com/)
+   
+  + Dependências de produção
 
-
+      - [Prisma](https://www.prisma.io/)
+      - [Express](https://expressjs.com/)
+      - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
+      - [body-parser](https://www.npmjs.com/package/body-parser)
+      - [cookie-parser](https://www.npmjs.com/package/cookie-parser)
+      - [dayjs](https://day.js.org/)
+      - [dotenv](https://www.npmjs.com/package/dotenv)
+      - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+      - [zod](https://zod.dev/)
+          
 ## Instalação
 
 ```bash
