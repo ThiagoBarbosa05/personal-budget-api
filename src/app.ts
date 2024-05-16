@@ -37,6 +37,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(usersRouter)
 app.use(envelopesRouter)
 app.use(transactionsRouter)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+})
+
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof InsufficientFundsToTransfer) {
